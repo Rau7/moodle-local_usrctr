@@ -1,37 +1,42 @@
-# Moodle User Counter Plugin (usrctr)
+# User Counter Plugin for Moodle
 
-This plugin allows you to set and enforce user limits in your Moodle installation. It provides functionality to:
+This plugin provides functionality to track and manage user counts in Moodle.
 
-- Set a maximum number of users allowed in your Moodle site
-- Control whether suspended and deleted users count towards the limit
-- Prevent new user creation when the limit is reached
-- Show clear error messages when attempting to exceed the limit
-- Control access to bulk user upload functionality based on the limit
+## Features
+
+- Track active user counts
+- Set user limits
+- Monitor user registrations
+- Configure counting options
 
 ## Installation
 
 1. Download the plugin
-2. Extract it to your Moodle's `/local` directory
-3. Rename the extracted folder to `usrctr`
-4. Visit your Moodle site's administration area to complete the installation
+2. Extract the files to /local/usrctr/
+3. Visit your Moodle site's administration area to complete the installation
+4. Configure the plugin settings under Site administration > Plugins > Local plugins > User Counter
 
 ## Configuration
 
-1. Go to Site administration > Plugins > Local plugins > User Counter
-2. Set your desired user limit
-3. Configure whether suspended and deleted users should count towards the limit
+The plugin can be configured with the following settings:
 
-## Features
+- User limit: Set maximum number of allowed users
+- Include suspended users: Choose whether to count suspended users
+- Include deleted users: Choose whether to count deleted users
 
-- Prevents user creation when limit is exceeded
-- Shows clear error messages
-- Integrates with Moodle's bulk user upload functionality
-- Supports both English and Turkish languages
+## Usage
+
+The plugin automatically tracks user counts and enforces limits based on your configuration.
 
 ## Requirements
 
-- Moodle 4.0 or higher
+- Moodle 4.0 or later
+- PHP 7.4 or later
 
 ## License
 
-This plugin is licensed under the GNU GPL v3 or later. See the LICENSE file for details.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+## Author
+
+Alp Toker <tokeralp@gmail.com>

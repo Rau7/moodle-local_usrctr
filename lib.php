@@ -1,6 +1,27 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
 //
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Library of interface functions and constants.
+ *
+ * @package    local_usrctr
+ * @copyright  2024 Alp Toker <tokeralp@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -192,6 +213,7 @@ function local_usrctr_before_standard_html_head() {
             $error->current = $usercount;
             
             $message = get_string('userlimitexceeded', 'local_usrctr', $error);
+            $upload_message = get_string('userlimitexceeded_upload', 'local_usrctr');
             
             // Add custom styling
             $style = "
@@ -210,23 +232,40 @@ function local_usrctr_before_standard_html_head() {
                         display: block !important;
                         width: 100% !important;
                     }
+
+                    .userlimit-error-message.small {
+                        font-size: 12px !important;
+                        padding: 8px !important;
+                        margin: 5px 0 !important;
+                    }
                 </style>
             ";
             
-            // Add JavaScript to disable form elements
+            // Add JavaScript to handle upload type dropdown
             $js = "
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        // Disable file input
-                        var fileInput = document.querySelector('input[name=\"userfile\"]');
-                        if (fileInput) {
-                            fileInput.disabled = true;
-                        }
-                        
-                        // Disable submit button
-                        var submitButton = document.querySelector('input[type=\"submit\"]');
-                        if (submitButton) {
-                            submitButton.disabled = true;
+                        // Get the upload type select element
+                        var uploadTypeSelect = document.querySelector('select[name=\"uutype\"]');
+                        if (uploadTypeSelect) {
+                            // Add warning message near the dropdown
+                            var warningMessage = document.createElement('div');
+                            warningMessage.className = 'userlimit-error-message small';
+                            warningMessage.innerHTML = " . json_encode($upload_message) . ";
+                            uploadTypeSelect.parentNode.insertBefore(warningMessage, uploadTypeSelect.nextSibling);
+
+                            // Disable 'Add new only' and 'Add all' options
+                            Array.from(uploadTypeSelect.options).forEach(function(option) {
+                                // 0 = Add new only, 2 = Add all / Update if exists
+                                if (option.value === '0' || option.value === '2') {
+                                    option.disabled = true;
+                                }
+                            });
+
+                            // If a disabled option is currently selected, change to 'Update existing only'
+                            if (uploadTypeSelect.value === '0' || uploadTypeSelect.value === '2') {
+                                uploadTypeSelect.value = '1'; // 1 is typically the value for 'Update existing only'
+                            }
                         }
                     });
                 </script>

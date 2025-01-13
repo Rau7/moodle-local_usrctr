@@ -1,0 +1,23 @@
+{
+  "name": "local/usrctr",
+  "type": "moodle-local",
+  "description": "A Moodle plugin to track and manage user counts",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Alp Toker",
+      "email": "tokeralp@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0",
+    "composer/installers": "~1.0"
+  },
+  "extra": {
+    "installer-name": "usrctr"
+  },
+  "support": {
+    "issues": "https://github.com/alptoker/moodle-local_usrctr/issues",
+    "source": "https://github.com/alptoker/moodle-local_usrctr"
+  }
+}

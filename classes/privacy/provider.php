@@ -15,34 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * User counter plugin upgrade code.
+ * Privacy Subsystem implementation for local_usrctr.
  *
  * @package    local_usrctr
  * @copyright  2024 Alp Toker <tokeralp@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_usrctr\privacy;
 
-function xmldb_local_usrctr_upgrade($oldversion) {
-    global $DB;
+use core_privacy\local\metadata\null_provider;
+use core_privacy\local\legacy_polyfill;
 
-    $dbman = $DB->get_manager();
+/**
+ * Privacy Subsystem for local_usrctr implementing null_provider.
+ *
+ * @copyright  2024 Alp Toker <tokeralp@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements null_provider {
+    use legacy_polyfill;
 
-    if ($oldversion < 2024011900) {
-        // Transfer existing limit to new config
-        if ($record = $DB->get_record('usrctr', ['id' => 1])) {
-            set_config('userlimit', $record->usrctr, 'local_usrctr');
-        }
-
-        // Drop old table if it exists
-        $table = new xmldb_table('usrctr');
-        if ($dbman->table_exists($table)) {
-            $dbman->drop_table($table);
-        }
-
-        upgrade_plugin_savepoint(true, 2024011900, 'local', 'usrctr');
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
     }
-
-    return true;
 }
