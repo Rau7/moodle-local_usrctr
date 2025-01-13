@@ -26,10 +26,15 @@ namespace local_usrctr\local\form;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once("$CFG->libdir/formslib.php");
+require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * User counter edit form class.
+ */
 class edit extends \moodleform {
-    //Add elements to form
+    /**
+     * Form definition.
+     */
     public function definition() {
         global $CFG;
         global $DB;
@@ -38,25 +43,32 @@ class edit extends \moodleform {
         $usrctr_number = $usrctr->usrctr;
         $sus = $usrctr->allow_suspended;
         $del = $usrctr->allow_deleted;
-        
 
-        $mform = $this->_form; // Don't forget the underscore! 
+        $mform = $this->_form;
 
-        $mform->addElement('text', 'usrctr', 'User Counter'); // Add elements to your form.
-        $mform->setType('usrctr', PARAM_INT);                   // Set type of element.
-        $mform->setDefault('usrctr', $usrctr_number);        // Default value.
+        // Add user counter field.
+        $mform->addElement('text', 'usrctr', 'User Counter');
+        $mform->setType('usrctr', PARAM_INT);
+        $mform->setDefault('usrctr', $usrctr_number);
 
-        $mform->addElement('checkbox', 'suspended', "İptal Edilmiş Kullanıcıları İçersin");
-        $mform->setDefault('suspended', $sus); 
+        // Add checkboxes for suspended and deleted users.
+        $mform->addElement('advcheckbox', 'suspended', "İptal Edilmiş Kullanıcıları İçersin");
+        $mform->setDefault('suspended', $sus);
 
-        $mform->addElement('checkbox', 'deleted', "Silinmiş Kullanıcıları İçersin");
-        $mform->setDefault('deleted', $del); 
+        $mform->addElement('advcheckbox', 'deleted', "Silinmiş Kullanıcıları İçersin");
+        $mform->setDefault('deleted', $del);
 
         $this->add_action_buttons();
-        
     }
-    //Custom validation should be added here
-    function validation($data, $files) {
+
+    /**
+     * Form validation.
+     *
+     * @param array $data Array of form data
+     * @param array $files Array of form files
+     * @return array Array of validation errors
+     */
+    public function validation($data, $files) {
         return array();
     }
 }

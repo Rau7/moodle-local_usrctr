@@ -24,17 +24,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$observers = array(
-    array(
+$observers = [
+    [
         'eventname' => '\core\event\user_created',
         'callback'  => '\local_usrctr\local\observer::user_created',
-    ),
-    array(
+    ],
+    [
         'eventname' => '\core\event\user_deleted',
         'callback'  => '\local_usrctr\local\observer::user_deleted',
-    ),
-    array(
+    ],
+    [
         'eventname' => '\core\event\user_updated',
         'callback'  => '\local_usrctr\local\observer::user_updated',
-    ),
-);
+    ],
+];

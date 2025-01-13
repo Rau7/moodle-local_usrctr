@@ -27,68 +27,64 @@ namespace local_usrctr\local;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Event observer class
+ * Event observer class.
  */
 class observer {
     /**
-     * Check if user limit is exceeded
-     */
-    private static function is_limit_exceeded($newusers = 1) {
-        global $DB;
-
-        // Get user limit from config
-        $limit = get_config('local_usrctr', 'userlimit');
-        if (empty($limit)) {
-            return false;
-        }
-
-        // Build conditions based on settings
-        $conditions = array();
-        if (!get_config('local_usrctr', 'include_suspended')) {
-            $conditions['suspended'] = 0;
-        }
-        if (!get_config('local_usrctr', 'include_deleted')) {
-            $conditions['deleted'] = 0;
-        }
-
-        // Count users
-        $usercount = $DB->count_records('user', $conditions);
-        
-        // Check if adding new users would exceed limit
-        return ($usercount + $newusers) > $limit;
-    }
-
-    /**
-     * Show error message
-     */
-    private static function show_limit_error($newusers = 1) {
-        global $DB;
-
-        // Get user limit and count for message
-        $limit = get_config('local_usrctr', 'userlimit');
-        $conditions = array();
-        if (!get_config('local_usrctr', 'include_suspended')) {
-            $conditions['suspended'] = 0;
-        }
-        if (!get_config('local_usrctr', 'include_deleted')) {
-            $conditions['deleted'] = 0;
-        }
-        $usercount = $DB->count_records('user', $conditions);
-
-        $error = new \stdClass();
-        $error->limit = $limit;
-        $error->current = $usercount;
-        $error->adding = $newusers;
-        
-        throw new \moodle_exception('userlimitexceeded', 'local_usrctr', '', $error);
-    }
-
-    /**
-     * Handle single user creation
+     * Handle user created event.
+     *
+     * @param \core\event\user_created $event The event.
      */
     public static function user_created(\core\event\user_created $event) {
-        if (self::is_limit_exceeded(1)) {
-            self::show_limit_error(1);
+        global $DB;
+        self::check_user_limit();
+    }
+
+    /**
+     * Handle user deleted event.
+     *
+     * @param \core\event\user_deleted $event The event.
+     */
+    public static function user_deleted(\core\event\user_deleted $event) {
+        global $DB;
+        self::check_user_limit();
+    }
+
+    /**
+     * Handle user updated event.
+     *
+     * @param \core\event\user_updated $event The event.
+     */
+    public static function user_updated(\core\event\user_updated $event) {
+        global $DB;
+        self::check_user_limit();
+    }
+
+    /**
+     * Check if user limit has been exceeded.
+     *
+     * @throws \moodle_exception
+     */
+    private static function check_user_limit() {
+        global $DB;
+
+        $config = get_config('local_usrctr');
+        if (empty($config->userlimit)) {
+            return;
+        }
+
+        $params = ['deleted' => 0];
+        if (!empty($config->include_suspended)) {
+            $params['suspended'] = 1;
+        }
+        if (!empty($config->include_deleted)) {
+            $params['deleted'] = 1;
+        }
+
+        $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
+        if ($usercount > $config->userlimit) {
+            throw new \moodle_exception('userlimitexceeded', 'local_usrctr',
+                '', ['current' => $usercount, 'limit' => $config->userlimit]);
         }
     }
 
@@ -106,9 +102,60 @@ class observer {
         }
 
         // If we're adding new users, check the limit
-        if ($uploadcount > 0 && self::is_limit_exceeded($uploadcount)) {
+        if ($uploadcount > 0 && self::check_user_limit_upload($uploadcount)) {
             self::show_limit_error($uploadcount);
         }
+    }
+
+    /**
+     * Check if user limit has been exceeded for upload.
+     *
+     * @param int $newusers
+     * @return bool
+     */
+    private static function check_user_limit_upload($newusers) {
+        global $DB;
+
+        $config = get_config('local_usrctr');
+        if (empty($config->userlimit)) {
+            return false;
+        }
+
+        $params = ['deleted' => 0];
+        if (!empty($config->include_suspended)) {
+            $params['suspended'] = 1;
+        }
+        if (!empty($config->include_deleted)) {
+            $params['deleted'] = 1;
+        }
+
+        $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
+        return ($usercount + $newusers) > $config->userlimit;
+    }
+
+    /**
+     * Show error message
+     */
+    private static function show_limit_error($newusers = 1) {
+        global $DB;
+
+        // Get user limit and count for message
+        $config = get_config('local_usrctr');
+        $params = ['deleted' => 0];
+        if (!empty($config->include_suspended)) {
+            $params['suspended'] = 1;
+        }
+        if (!empty($config->include_deleted)) {
+            $params['deleted'] = 1;
+        }
+        $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
+
+        $error = new \stdClass();
+        $error->limit = $config->userlimit;
+        $error->current = $usercount;
+        $error->adding = $newusers;
+        
+        throw new \moodle_exception('userlimitexceeded', 'local_usrctr', '', $error);
     }
 
     /**
