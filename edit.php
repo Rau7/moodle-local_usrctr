@@ -23,7 +23,7 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
-require_once($CFG->dirroot.'/local/usrctr/classes/form/edit.php');
+require_once($CFG->dirroot . '/local/usrctr/classes/local/form/edit.php');
 
 global $DB;
 
