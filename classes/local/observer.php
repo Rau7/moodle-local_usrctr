@@ -133,7 +133,7 @@ class observer {
             $params['suspended'] = 1;
         }
         if (!empty($config->include_deleted)) {
-            $params['deleted'] => 1;
+            $params['deleted'] = 1; // Fixing array assignment syntax
         }
 
         $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);

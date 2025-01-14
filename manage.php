@@ -23,6 +23,11 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->libdir . '/adminlib.php');
+
+require_login();
+admin_externalpage_setup('local_usrctr_manage');
+
 global $DB;
 
 $PAGE->set_url(new moodle_url('/local/usrctr/manage.php'));

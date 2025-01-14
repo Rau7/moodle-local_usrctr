@@ -18,15 +18,15 @@
 /**
  * Version information.
  *
- * @package    local/usrctr
+ * @package    local_usrctr
  * @copyright  2024 Alp Toker <tokeralp@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024131992;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112800;        // Requires this Moodle version.
+$plugin->version   = 2024011900;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2023100900;        // Requires this Moodle version.
 $plugin->component = 'local_usrctr';    // Full name of the plugin (used for diagnostics).
 $plugin->maturity  = MATURITY_STABLE;   // Maturity level.
 $plugin->release   = '1.0.0';           // Human-readable version name.

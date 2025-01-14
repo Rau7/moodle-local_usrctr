@@ -63,13 +63,16 @@ class edit extends \moodleform {
 
     /**
      * Load in existing data as form defaults.
+     *
+     * @param \stdClass $defaultvalues Object containing default values
+     * @return void
      */
-    public function set_data($default_values) {
-        if (!empty($default_values->id)) {
-            $usrctrnumber = $default_values->usrctrnumber;
-            $default_values->usrctrnumber = $usrctrnumber;
+    public function set_data($defaultvalues) {
+        if (!empty($defaultvalues->id)) {
+            $usrctrnumber = $defaultvalues->usrctrnumber;
+            $defaultvalues->usrctrnumber = $usrctrnumber;
         }
-        parent::set_data($default_values);
+        parent::set_data($defaultvalues);
     }
 
     /**

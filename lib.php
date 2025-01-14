@@ -30,14 +30,14 @@ defined('MOODLE_INTERNAL') || die();
 function local_usrctr_is_new_user_page() {
     global $PAGE;
 
-    // Get the current URL path
+    // Get the current URL path.
     $url = $PAGE->url->get_path();
     
-    // Check if we're on a user edit page
+    // Check if we're on a user edit page.
     if (strpos($url, '/user/editadvanced.php') !== false || 
         strpos($url, '/user/edit.php') !== false) {
         
-        // Get the user id parameter
+        // Get the user id parameter.
         $userid = optional_param('id', 0, PARAM_INT);
         
         // Consider it a new user page if:
@@ -56,13 +56,13 @@ function local_usrctr_is_new_user_page() {
 function local_usrctr_is_limit_exceeded() {
     global $DB;
 
-    // Get user limit from config
+    // Get user limit from config.
     $limit = get_config('local_usrctr', 'userlimit');
     if (empty($limit)) {
         return false;
     }
 
-    // Build conditions based on settings
+    // Build conditions based on settings.
     $conditions = array();
     if (!get_config('local_usrctr', 'include_suspended')) {
         $conditions['suspended'] = 0;
@@ -71,7 +71,7 @@ function local_usrctr_is_limit_exceeded() {
         $conditions['deleted'] = 0;
     }
 
-    // Count users
+    // Count users.
     $usercount = $DB->count_records('user', $conditions);
     return $usercount >= $limit;
 }
@@ -82,7 +82,7 @@ function local_usrctr_is_limit_exceeded() {
 function local_usrctr_show_limit_message() {
     global $DB, $OUTPUT;
 
-    // Get user limit and count for message
+    // Get user limit and count for message.
     $limit = get_config('local_usrctr', 'userlimit');
     $conditions = array();
     if (!get_config('local_usrctr', 'include_suspended')) {
@@ -99,7 +99,7 @@ function local_usrctr_show_limit_message() {
     
     $message = get_string('userlimitexceeded', 'local_usrctr', $error);
     
-    // Add custom styling
+    // Add custom styling.
     $style = html_writer::tag('style', '
         .userlimit-error-message {
             background-color: #f8d7da;
@@ -128,7 +128,7 @@ function local_usrctr_show_limit_message() {
 function local_usrctr_show_limit_error() {
     global $DB, $OUTPUT, $CFG;
 
-    // Get user limit and count for message
+    // Get user limit and count for message.
     $limit = get_config('local_usrctr', 'userlimit');
     $conditions = array();
     if (!get_config('local_usrctr', 'include_suspended')) {
@@ -145,7 +145,7 @@ function local_usrctr_show_limit_error() {
     
     $message = get_string('userlimitexceeded', 'local_usrctr', $error);
     
-    // Add custom styling
+    // Add custom styling.
     $style = html_writer::tag('style', '
         .userlimit-error {
             background-color: #f8d7da;
@@ -175,12 +175,12 @@ function local_usrctr_show_limit_error() {
 function local_usrctr_before_http_headers() {
     global $PAGE;
 
-    // Initialize $PAGE if not done yet
+    // Initialize $PAGE if not done yet.
     if (!isset($PAGE) || !$PAGE->has_set_url()) {
         return;
     }
 
-    // Check if we're trying to add a new user
+    // Check if we're trying to add a new user.
     if (local_usrctr_is_new_user_page()) {
         if (local_usrctr_is_limit_exceeded()) {
             local_usrctr_show_limit_error();
@@ -194,10 +194,10 @@ function local_usrctr_before_http_headers() {
 function local_usrctr_before_standard_html_head() {
     global $PAGE, $OUTPUT, $DB;
 
-    // Check if we're on the upload user page
+    // Check if we're on the upload user page.
     if (strpos($PAGE->url->get_path(), '/admin/tool/uploaduser/index.php') !== false) {
         if (local_usrctr_is_limit_exceeded()) {
-            // Get user limit and count for message
+            // Get user limit and count for message.
             $limit = get_config('local_usrctr', 'userlimit');
             $conditions = array();
             if (!get_config('local_usrctr', 'include_suspended')) {
@@ -213,9 +213,9 @@ function local_usrctr_before_standard_html_head() {
             $error->current = $usercount;
             
             $message = get_string('userlimitexceeded', 'local_usrctr', $error);
-            $upload_message = get_string('userlimitexceeded_upload', 'local_usrctr');
+            $uploadMessage = get_string('userlimitexceeded_upload', 'local_usrctr');
             
-            // Add custom styling
+            // Add custom styling.
             $style = "
                 <style>
                     .userlimit-error-message {
@@ -241,20 +241,20 @@ function local_usrctr_before_standard_html_head() {
                 </style>
             ";
             
-            // Add JavaScript to handle upload type dropdown
+            // Add JavaScript to handle upload type dropdown.
             $js = "
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        // Get the upload type select element
+                        // Get the upload type select element.
                         var uploadTypeSelect = document.querySelector('select[name=\"uutype\"]');
                         if (uploadTypeSelect) {
-                            // Add warning message near the dropdown
+                            // Add warning message near the dropdown.
                             var warningMessage = document.createElement('div');
                             warningMessage.className = 'userlimit-error-message small';
-                            warningMessage.innerHTML = " . json_encode($upload_message) . ";
+                            warningMessage.innerHTML = " . json_encode($uploadMessage) . ";
                             uploadTypeSelect.parentNode.insertBefore(warningMessage, uploadTypeSelect.nextSibling);
 
-                            // Disable 'Add new only' and 'Add all' options
+                            // Disable 'Add new only' and 'Add all' options.
                             Array.from(uploadTypeSelect.options).forEach(function(option) {
                                 // 0 = Add new only, 2 = Add all / Update if exists
                                 if (option.value === '0' || option.value === '2') {
@@ -262,7 +262,7 @@ function local_usrctr_before_standard_html_head() {
                                 }
                             });
 
-                            // If a disabled option is currently selected, change to 'Update existing only'
+                            // If a disabled option is currently selected, change to 'Update existing only'.
                             if (uploadTypeSelect.value === '0' || uploadTypeSelect.value === '2') {
                                 uploadTypeSelect.value = '1'; // 1 is typically the value for 'Update existing only'
                             }
@@ -271,7 +271,7 @@ function local_usrctr_before_standard_html_head() {
                 </script>
             ";
             
-            // Output style and error message
+            // Output style and error message.
             echo $style;
             echo \html_writer::div($message, 'userlimit-error-message alert alert-danger');
             echo $js;
@@ -283,7 +283,7 @@ function local_usrctr_before_standard_html_head() {
  * Prevent access to user creation pages
  */
 function local_usrctr_after_config() {
-    // Check if we're trying to add a new user
+    // Check if we're trying to add a new user.
     if (local_usrctr_is_new_user_page()) {
         if (local_usrctr_is_limit_exceeded()) {
             local_usrctr_show_limit_error();
@@ -302,7 +302,7 @@ function local_usrctr_after_config() {
  * @return void
  */
 function local_usrctr_extend_navigation_user(\navigation_node $navigation, \stdClass $user, \context_user $usercontext, \stdClass $course, \context_course $coursecontext) {
-    // If limit exceeded, remove "Add a new user" link
+    // If limit exceeded, remove "Add a new user" link.
     if (local_usrctr_is_limit_exceeded()) {
         $nodes = $navigation->get_children_key_list();
         foreach ($nodes as $node) {
@@ -317,7 +317,7 @@ function local_usrctr_extend_navigation_user(\navigation_node $navigation, \stdC
  * Check before form display
  */
 function local_usrctr_before_require_login() {
-    // Check if we're trying to add a new user
+    // Check if we're trying to add a new user.
     if (local_usrctr_is_new_user_page()) {
         if (local_usrctr_is_limit_exceeded()) {
             local_usrctr_show_limit_error();
