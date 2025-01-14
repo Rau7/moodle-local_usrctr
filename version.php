@@ -26,11 +26,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024011900;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2023100900;        // Requires this Moodle version.
-$plugin->component = 'local_usrctr';    // Full name of the plugin (used for diagnostics).
-$plugin->maturity  = MATURITY_STABLE;   // Maturity level.
-$plugin->release   = '1.0.0';           // Human-readable version name.
+$plugin->component = 'local_usrctr';
+$plugin->version   = 2024011400;
+$plugin->requires  = 2023100900;
+$plugin->maturity  = MATURITY_STABLE;
+$plugin->release   = '1.0.0';  // Version number.
 
-// Add AMD support
+// Add AMD support.
 $plugin->dependencies = [];
