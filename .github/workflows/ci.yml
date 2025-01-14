@@ -63,7 +63,7 @@ jobs:
 
       - name: PHP Lint
         if: ${{ always() }}
-        run: moodle-plugin-ci phplint
+        run: moodle-plugin-ci phplint ./plugin
 
       - name: PHP Copy/Paste Detector
         if: ${{ always() }}
