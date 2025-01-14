@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_usrctr';
-$plugin->version   = 2024011400;
+$plugin->version   = 2024011900;  // Version: Year (2024) Month (01) Day (19) Sequence (00).
 $plugin->requires  = 2023100900;
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.0.0';  // Version number.

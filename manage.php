@@ -34,14 +34,14 @@ $PAGE->set_url(new moodle_url('/local/usrctr/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Change User Count');
 
-$usrctr_number = $DB->get_records('usrctr')[1]->usrctr;
+$usrctrnum = $DB->get_records('usrctr')[1]->usrctr;
 
 echo $OUTPUT->header();
 
 $templatecontext = (object)[
     'heading' => 'Change User Limit',
     'explanation' => 'Limit # of users that can enter the platform',
-    'user_counter' => $usrctr_number,
+    'user_counter' => $usrctrnum,
     'edit_url' => new moodle_url('/local/usrctr/edit.php'),
 ];
 
@@ -57,10 +57,10 @@ $records = $DB->get_records('local_usrctr');
 foreach ($records as $record) {
     $editurl = new moodle_url('/local/usrctr/edit.php', array('id' => $record->id));
     $deleteurl = new moodle_url('/local/usrctr/delete.php', array('id' => $record->id));
-    
+
     $actions = html_writer::link($editurl, $OUTPUT->pix_icon('t/edit', get_string('edit'))) . ' ' .
                html_writer::link($deleteurl, $OUTPUT->pix_icon('t/delete', get_string('delete')));
-    
+
     $table->data[] = array($record->usrctrnumber, $actions);
 }
 

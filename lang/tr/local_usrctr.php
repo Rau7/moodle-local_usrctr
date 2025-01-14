@@ -24,11 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Plugin strings
+// Plugin strings.
 $string['pluginname'] = 'Kullanıcı Sayacı';
 $string['pluginname_desc'] = 'Kullanıcı Sayacı eklentisi, Moodle sitenizde kullanıcı sayısını takip etmenizi ve sınırlamanızı sağlar.';
 
-// Settings strings
+// Settings strings.
 $string['settings'] = 'Kullanıcı Sayacı Ayarları';
 $string['userlimit'] = 'Kullanıcı limiti';
 $string['userlimit_desc'] = 'Sistemde izin verilen maksimum kullanıcı sayısı';
@@ -38,7 +38,7 @@ $string['include_suspended_desc'] = 'Etkinleştirilirse, askıya alınmış kull
 $string['include_deleted'] = 'Silinmiş kullanıcıları dahil et';
 $string['include_deleted_desc'] = 'Etkinleştirilirse, silinmiş kullanıcılar kullanıcı limitine dahil edilecektir';
 
-// Error messages
+// Error messages.
 $string['error'] = 'Hata';
 $string['error_limit_reached'] = 'Kullanıcı limitine ulaşıldı. Lütfen yöneticinizle iletişime geçin.';
 $string['error_upload_limit'] = 'Kullanıcılar yüklenemiyor: kullanıcı limiti aşılacak.';
@@ -46,16 +46,16 @@ $string['userlimitexceeded'] = 'Kullanıcı limiti aşıldı. Mevcut kullanıcı
 $string['userlimitexceeded_title'] = 'Kullanıcı Limiti Aşıldı';
 $string['userlimitexceeded_upload'] = 'Kullanıcı limiti aşıldı. Sadece mevcut kullanıcıları güncelleyebilirsiniz.';
 
-// Status messages
+// Status messages.
 $string['status_active'] = 'Aktif';
 $string['status_suspended'] = 'Askıya Alınmış';
 $string['status_deleted'] = 'Silinmiş';
 $string['total_users'] = 'Toplam Kullanıcı';
 $string['remaining_slots'] = 'Kalan Kontenjan';
 
-// Capability strings
+// Capability strings.
 $string['usrctr:manage'] = 'Kullanıcı sayacı ayarlarını yönet';
 $string['usrctr:view'] = 'Kullanıcı sayacı istatistiklerini görüntüle';
 
-// Privacy
+// Privacy.
 $string['privacy:metadata'] = 'Kullanıcı Sayacı eklentisi hiçbir kişisel veri saklamaz.';
