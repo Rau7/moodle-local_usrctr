@@ -221,31 +221,26 @@ function local_usrctr_before_standard_html_head() {
             $uploadmsg = get_string('userlimitexceeded_upload', 'local_usrctr');
 
             // Add JavaScript to modify the form.
-            $js = "
-                require(['jquery'], function($) {
-                    $(document).ready(function() {
-                        // Disable the submit button.
-                        $('input[type=submit]').prop('disabled', true);
-                        
-                        // Add error message.
-                        $('.mform').prepend('<div class=\"alert alert-danger\">" . $uploadmsg . "</div>');
-                        
-                        // Modify form options.
-                        $('#id_uutype_1').prop('disabled', true);
-                        $('#id_uutype_2').prop('disabled', true);
-                        $('#id_uutype_3').prop('checked', true);
-                        
-                        // Re-enable submit only if update mode is selected.
-                        $('input[name=uutype]').change(function() {
-                            if ($('#id_uutype_3').is(':checked')) {
-                                $('input[type=submit]').prop('disabled', false);
-                            } else {
-                                $('input[type=submit]').prop('disabled', true);
-                            }
-                        });
+            $js = "require(['jquery'], function(\$) {
+                \$(document).ready(function() {
+                    // Disable the submit button.
+                    \$('input[type=submit]').prop('disabled', true);
+                    // Add error message.
+                    \$('.mform').prepend('<div class=\"alert alert-danger\">' . \$uploadmsg . '</div>');
+                    // Modify form options.
+                    \$('#id_uutype_1').prop('disabled', true);
+                    \$('#id_uutype_2').prop('disabled', true);
+                    \$('#id_uutype_3').prop('checked', true);
+                    // Re-enable submit only if update mode is selected.
+                    \$('input[name=uutype]').change(function() {
+                        if (\$('#id_uutype_3').is(':checked')) {
+                            \$('input[type=submit]').prop('disabled', false);
+                        } else {
+                            \$('input[type=submit]').prop('disabled', true);
+                        }
                     });
                 });
-            ";
+            });";
 
             // Add the JavaScript to the page.
             $PAGE->requires->js_amd_inline($js);
@@ -287,7 +282,7 @@ function local_usrctr_after_config() {
  * @param \context_course $coursecontext The course context
  * @return void
  */
-function local_usrctr_extend_navigation_user($navigation, $user, $usercontext, $course, $coursecontext) {
+function local_usrctr_extend_navigation_user(\navigation_node $navigation, \stdClass $user, \context_user $usercontext, \stdClass $course, \context_course $coursecontext) {
     global $CFG;
 
     // Add link to user counter settings.
@@ -322,7 +317,3 @@ function local_usrctr_before_require_login() {
         }
     }
 }
-
-// Get the current user counter value.
-$currentusrctr = $DB->get_field('local_usrctr', 'usrctr', array('id' => 1));
-
