@@ -35,21 +35,21 @@ class edit extends \moodleform {
     /**
      * Form definition.
      */
-    public function definition() {
+    protected function definition() {
         global $CFG;
         global $DB;
 
         $usrctr = $DB->get_records('usrctr')[1];
-        $usrctr_number = $usrctr->usrctr;
+        $usrctrnumber = $usrctr->usrctr;
         $sus = $usrctr->allow_suspended;
         $del = $usrctr->allow_deleted;
 
         $mform = $this->_form;
 
         // Add user counter field.
-        $mform->addElement('text', 'usrctr', 'User Counter');
-        $mform->setType('usrctr', PARAM_INT);
-        $mform->setDefault('usrctr', $usrctr_number);
+        $mform->addElement('text', 'usrctrnumber', get_string('usrctrnumber', 'local_usrctr'));
+        $mform->setType('usrctrnumber', PARAM_INT);
+        $mform->addRule('usrctrnumber', get_string('required'), 'required', null, 'client');
 
         // Add checkboxes for suspended and deleted users.
         $mform->addElement('advcheckbox', 'suspended', "İptal Edilmiş Kullanıcıları İçersin");
@@ -59,6 +59,17 @@ class edit extends \moodleform {
         $mform->setDefault('deleted', $del);
 
         $this->add_action_buttons();
+    }
+
+    /**
+     * Load in existing data as form defaults.
+     */
+    public function set_data($default_values) {
+        if (!empty($default_values->id)) {
+            $usrctrnumber = $default_values->usrctrnumber;
+            $default_values->usrctrnumber = $usrctrnumber;
+        }
+        parent::set_data($default_values);
     }
 
     /**

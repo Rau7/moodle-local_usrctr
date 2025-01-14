@@ -34,6 +34,7 @@ class observer {
      * Handle user created event.
      *
      * @param \core\event\user_created $event The event.
+     * @return void
      */
     public static function user_created(\core\event\user_created $event) {
         global $DB;
@@ -44,6 +45,7 @@ class observer {
      * Handle user deleted event.
      *
      * @param \core\event\user_deleted $event The event.
+     * @return void
      */
     public static function user_deleted(\core\event\user_deleted $event) {
         global $DB;
@@ -54,6 +56,7 @@ class observer {
      * Handle user updated event.
      *
      * @param \core\event\user_updated $event The event.
+     * @return void
      */
     public static function user_updated(\core\event\user_updated $event) {
         global $DB;
@@ -64,6 +67,7 @@ class observer {
      * Check if user limit has been exceeded.
      *
      * @throws \moodle_exception
+     * @return void
      */
     private static function check_user_limit() {
         global $DB;
@@ -90,6 +94,9 @@ class observer {
 
     /**
      * Handle bulk user upload
+     *
+     * @param \tool_uploaduser\event\uploaduser_started $event The event.
+     * @return void
      */
     public static function uploaduser_started(\tool_uploaduser\event\uploaduser_started $event) {
         global $SESSION;
@@ -126,7 +133,7 @@ class observer {
             $params['suspended'] = 1;
         }
         if (!empty($config->include_deleted)) {
-            $params['deleted'] = 1;
+            $params['deleted'] => 1;
         }
 
         $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
@@ -135,6 +142,9 @@ class observer {
 
     /**
      * Show error message
+     *
+     * @param int $newusers
+     * @return void
      */
     private static function show_limit_error($newusers = 1) {
         global $DB;
@@ -160,6 +170,9 @@ class observer {
 
     /**
      * Triggered before HTTP headers are sent.
+     *
+     * @param \core\event\before_http_headers $event The event.
+     * @return void
      */
     public static function before_http_headers(\core\event\before_http_headers $event) {
         // Check user limit
@@ -168,6 +181,9 @@ class observer {
 
     /**
      * Triggered when standard HTML head is requested.
+     *
+     * @param \core\event\standard_html_head_requested $event The event.
+     * @return void
      */
     public static function before_standard_html_head(\core\event\standard_html_head_requested $event) {
         // Modify upload user form if needed

@@ -24,19 +24,25 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Upgrade function for the plugin.
+ *
+ * @param int $oldversion The old version of the plugin
+ * @return bool True if upgrade succeeded
+ */
 function xmldb_local_usrctr_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2024011900) {
-        // Transfer existing limit to new config
-        if ($record = $DB->get_record('usrctr', ['id' => 1])) {
+        // Transfer existing limit to new config.
+        if ($record = $DB->get_record('local_usrctr', ['id' => 1])) {
             set_config('userlimit', $record->usrctr, 'local_usrctr');
         }
 
-        // Drop old table if it exists
-        $table = new xmldb_table('usrctr');
+        // Drop old table if it exists.
+        $table = new xmldb_table('local_usrctr');
         if ($dbman->table_exists($table)) {
             $dbman->drop_table($table);
         }

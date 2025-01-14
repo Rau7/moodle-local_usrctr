@@ -292,9 +292,16 @@ function local_usrctr_after_config() {
 }
 
 /**
- * Extend user navigation
+ * Extend user navigation.
+ *
+ * @param \navigation_node $navigation The navigation node to extend
+ * @param \stdClass $user The user object
+ * @param \context_user $usercontext The user context
+ * @param \stdClass $course The course object
+ * @param \context_course $coursecontext The course context
+ * @return void
  */
-function local_usrctr_extend_navigation_user($navigation, $user, $usercontext, $course, $coursecontext) {
+function local_usrctr_extend_navigation_user(\navigation_node $navigation, \stdClass $user, \context_user $usercontext, \stdClass $course, \context_course $coursecontext) {
     // If limit exceeded, remove "Add a new user" link
     if (local_usrctr_is_limit_exceeded()) {
         $nodes = $navigation->get_children_key_list();
@@ -317,3 +324,6 @@ function local_usrctr_before_require_login() {
         }
     }
 }
+
+// Get the current user counter value.
+$currentusrctr = $DB->get_field('local_usrctr', 'usrctr', array('id' => 1));

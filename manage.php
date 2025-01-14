@@ -25,23 +25,40 @@
 require_once(__DIR__ . '/../../config.php');
 global $DB;
 
-        
 $PAGE->set_url(new moodle_url('/local/usrctr/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Change User Count');
 
 $usrctr_number = $DB->get_records('usrctr')[1]->usrctr;
 
-
 echo $OUTPUT->header();
 
 $templatecontext = (object)[
-	'heading' => 'Change User Limit',
-	'explanation' => 'Limit # of users that can enter the platform',
-	'user_counter' => $usrctr_number,
-	'edit_url' => new moodle_url('/local/usrctr/edit.php'),
+    'heading' => 'Change User Limit',
+    'explanation' => 'Limit # of users that can enter the platform',
+    'user_counter' => $usrctr_number,
+    'edit_url' => new moodle_url('/local/usrctr/edit.php'),
 ];
 
 echo $OUTPUT->render_from_template('local_usrctr/usrctr', $templatecontext);
+
+$table = new html_table();
+$table->head = array(
+    get_string('usrctrnumber', 'local_usrctr'),
+    get_string('actions', 'local_usrctr')
+);
+
+$records = $DB->get_records('local_usrctr');
+foreach ($records as $record) {
+    $editurl = new moodle_url('/local/usrctr/edit.php', array('id' => $record->id));
+    $deleteurl = new moodle_url('/local/usrctr/delete.php', array('id' => $record->id));
+    
+    $actions = html_writer::link($editurl, $OUTPUT->pix_icon('t/edit', get_string('edit'))) . ' ' .
+               html_writer::link($deleteurl, $OUTPUT->pix_icon('t/delete', get_string('delete')));
+    
+    $table->data[] = array($record->usrctrnumber, $actions);
+}
+
+echo html_writer::table($table);
 
 echo $OUTPUT->footer();
