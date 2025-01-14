@@ -19,8 +19,8 @@
  * Version information.
  *
  * @package    local_usrctr
- * @copyright  2024 Alp Toker <tokeralp@gmail.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Alp Toker <tokeralp@gmail.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
