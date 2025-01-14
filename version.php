@@ -30,3 +30,6 @@ $plugin->requires  = 2022112800;        // Requires this Moodle version.
 $plugin->component = 'local_usrctr';    // Full name of the plugin (used for diagnostics).
 $plugin->maturity  = MATURITY_STABLE;   // Maturity level.
 $plugin->release   = '1.0.0';           // Human-readable version name.
+
+// Add AMD support
+$plugin->dependencies = [];
