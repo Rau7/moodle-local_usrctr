@@ -24,8 +24,6 @@
 
 namespace local_usrctr\local;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Event observer class.
  */
@@ -77,12 +75,12 @@ class observer {
             return;
         }
 
-        $params = ['deleted' => 0];
+        $params = ['deleted' => 0]; // Get active users.
         if (!empty($config->include_suspended)) {
-            $params['suspended'] = 1;
+            $params['suspended'] = 1; // Include suspended users.
         }
         if (!empty($config->include_deleted)) {
-            $params['deleted'] = 1;
+            $params['deleted'] = 1; // Include deleted users.
         }
 
         $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
@@ -93,7 +91,7 @@ class observer {
     }
 
     /**
-     * Handle bulk user upload
+     * Handle bulk user upload.
      *
      * @param \tool_uploaduser\event\uploaduser_started $event The event.
      * @return void
@@ -101,14 +99,14 @@ class observer {
     public static function uploaduser_started(\tool_uploaduser\event\uploaduser_started $event) {
         global $SESSION;
 
-        // Get the number of users to be added
+        // Get the number of users to be added.
         $uploadcount = 0;
         if (isset($SESSION->uploaduser['uutype']) && $SESSION->uploaduser['uutype'] === UU_USER_ADDNEW) {
-            // Count lines in the CSV file (excluding header)
+            // Count lines in the CSV file (excluding header).
             $uploadcount = count($SESSION->uploaduser['userlist']) - 1;
         }
 
-        // If we're adding new users, check the limit
+        // If we're adding new users, check the limit.
         if ($uploadcount > 0 && self::check_user_limit_upload($uploadcount)) {
             self::show_limit_error($uploadcount);
         }
@@ -117,8 +115,8 @@ class observer {
     /**
      * Check if user limit has been exceeded for upload.
      *
-     * @param int $newusers
-     * @return bool
+     * @param int $newusers Number of new users to be added.
+     * @return bool True if limit would be exceeded.
      */
     private static function check_user_limit_upload($newusers) {
         global $DB;
@@ -128,12 +126,12 @@ class observer {
             return false;
         }
 
-        $params = ['deleted' => 0];
+        $params = ['deleted' => 0]; // Get active users.
         if (!empty($config->include_suspended)) {
-            $params['suspended'] = 1;
+            $params['suspended'] = 1; // Include suspended users.
         }
         if (!empty($config->include_deleted)) {
-            $params['deleted'] = 1; // Fixing array assignment syntax
+            $params['deleted'] = 1; // Include deleted users.
         }
 
         $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
@@ -141,22 +139,22 @@ class observer {
     }
 
     /**
-     * Show error message
+     * Show error message.
      *
-     * @param int $newusers
+     * @param int $newusers Number of new users being added.
      * @return void
      */
     private static function show_limit_error($newusers = 1) {
         global $DB;
 
-        // Get user limit and count for message
+        // Get user limit and count for message.
         $config = get_config('local_usrctr');
-        $params = ['deleted' => 0];
+        $params = ['deleted' => 0]; // Get active users.
         if (!empty($config->include_suspended)) {
-            $params['suspended'] = 1;
+            $params['suspended'] = 1; // Include suspended users.
         }
         if (!empty($config->include_deleted)) {
-            $params['deleted'] = 1;
+            $params['deleted'] = 1; // Include deleted users.
         }
         $usercount = $DB->count_records_select('user', 'deleted = :deleted', $params);
 
@@ -164,7 +162,7 @@ class observer {
         $error->limit = $config->userlimit;
         $error->current = $usercount;
         $error->adding = $newusers;
-        
+
         throw new \moodle_exception('userlimitexceeded', 'local_usrctr', '', $error);
     }
 
@@ -175,7 +173,7 @@ class observer {
      * @return void
      */
     public static function before_http_headers(\core\event\before_http_headers $event) {
-        // Check user limit
+        // Check user limit.
         local_usrctr_before_http_headers();
     }
 
@@ -186,7 +184,8 @@ class observer {
      * @return void
      */
     public static function before_standard_html_head(\core\event\standard_html_head_requested $event) {
-        // Modify upload user form if needed
+        // Modify upload user form if needed.
         local_usrctr_before_standard_html_head();
     }
 }
+
