@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Check if we're trying to add a new user.
  *
@@ -36,7 +34,7 @@ function local_usrctr_is_new_user_page() {
     $url = $PAGE->url->get_path();
 
     // Check if we're on a user edit page.
-    if (strpos($url, '/user/editadvanced.php') !== false || 
+    if (strpos($url, '/user/editadvanced.php') !== false ||
         strpos($url, '/user/edit.php') !== false) {
 
         // Get the user id parameter.
@@ -275,14 +273,14 @@ function local_usrctr_after_config() {
 /**
  * Extend user navigation.
  *
- * @param \navigation_node $navigation The navigation node to extend
- * @param \stdClass $user The user object
- * @param \context_user $usercontext The user context
- * @param \stdClass $course The course object
- * @param \context_course $coursecontext The course context
+ * @param navigation_node $navigation Navigation node
+ * @param stdClass $user User object
+ * @param context_user $usercontext User context
+ * @param stdClass $course Course object
+ * @param context_course $coursecontext Course context
  * @return void
  */
-function local_usrctr_extend_navigation_user(\navigation_node $navigation, \stdClass $user, \context_user $usercontext, \stdClass $course, \context_course $coursecontext) {
+function local_usrctr_extend_navigation_user($navigation, $user, $usercontext, $course, $coursecontext) {
     global $CFG;
 
     // Add link to user counter settings.
