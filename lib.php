@@ -325,3 +325,4 @@ function local_usrctr_before_require_login() {
 
 // Get the current user counter value.
 $currentusrctr = $DB->get_field('local_usrctr', 'usrctr', array('id' => 1));
+
