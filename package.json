@@ -1,0 +1,19 @@
+{
+  "name": "moodle-local_usrctr",
+  "version": "1.0.0",
+  "description": "User Counter Plugin for Moodle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["moodle", "plugin"],
+  "author": "Alp Toker",
+  "license": "GPL-3.0",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.6.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0"
+  }
+}
